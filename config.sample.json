@@ -1,0 +1,10 @@
+{
+  "api": {
+    "protocol": "",
+    "host": "",
+    "path": "",
+    "headers": {}
+  },
+  "repoDirectory": "",
+  "serviceWhiteList": []
+}
