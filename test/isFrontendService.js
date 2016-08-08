@@ -1,5 +1,5 @@
 import test from 'ava';
-const isFrontendService = require('./../lib/utils/isFrontendService');
+import isFrontendService from './../lib/utils/isFrontendService';
 
 test('frontend service name should be identified as a frontend service', t => {
   t.plan(1);

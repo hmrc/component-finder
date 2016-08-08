@@ -1,7 +1,8 @@
 import test from 'ava';
+import serviceCatalogue from './../lib/serviceCatalogue';
+import config from './../config';
 const nock = require('nock');
-const serviceCatalogue = require('./../lib/serviceCatalogue');
-const config = require('./../config');
+const process = require('child_process');
 let mockServices;
 
 test.beforeEach(t => {

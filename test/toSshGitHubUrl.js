@@ -1,5 +1,5 @@
 import test from 'ava';
-const toSshGitHubUrl = require('./../lib/utils/toSshGitHubUrl');
+import toSshGitHubUrl from './../lib/utils/toSshGitHubUrl';
 
 test('https GitHub url should be correctly converted to GitHub ssh url', t => {
   t.plan(1);
