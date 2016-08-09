@@ -15,8 +15,12 @@
     "babel-preset-es2015-node4": "^2.1.0",
     "babel-register": "^6.11.6",
     "co": "^4.6.0",
-    "nock": "^8.0.0",
     "progress": "^1.1.8"
+  },
+  "devDependencies": {
+    "nyc": "^7.1.0",
+    "ava": "^0.15.2",
+    "nock": "^8.0.0"
   },
   "ava": {
     "require": [
