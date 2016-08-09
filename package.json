@@ -18,9 +18,7 @@
     "progress": "^1.1.8"
   },
   "devDependencies": {
-    "nyc": "^7.1.0",
-    "ava": "^0.15.2",
-    "nock": "^8.0.0"
+    "sinon": "^1.17.5"
   },
   "ava": {
     "require": [
