@@ -1,4 +1,5 @@
 # Component Finder
+
 A tool that clones all `-frontend` service repositories and any white-listed service repositories, searches their `*.html` files for a `<searchString>` and provides a list of files that contain said `<searchString>`.
 
 ### Requirements
@@ -12,11 +13,13 @@ To install multiple versions of Node.js, you may find it easier to use a node ve
 * [n](https://github.com/tj/n)
 
 ### Usage
+
 ```
 $ node index.js <searchString>
 ```
 
 ### Tests
+
 To run tests
 ```
 $ npm test
@@ -24,9 +27,8 @@ $ npm test
 
 To run test with a watch task
 ```
-$ npm test -- --watch
+$ npm run test:watch
 ```
-
 
 ### License
 
