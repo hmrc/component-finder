@@ -30,7 +30,7 @@ test.beforeEach(t => {
   ];
 });
 
-test('response should be returned from service catalogue', async t => {
+test('.getServices() should successfully return services', async t => {
   t.plan(2);
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -43,7 +43,7 @@ test('response should be returned from service catalogue', async t => {
   t.deepEqual(services, mockServices);
 });
 
-test('error should be returned when statusCode is not 200', t => {
+test('.getServices() should error/reject when statusCode is not 200', t => {
   t.plan(1);
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -57,7 +57,7 @@ test('error should be returned when statusCode is not 200', t => {
     });
 });
 
-test('getServices should reject when bad JSON is returned', t => {
+test('.getServices() should reject when bad JSON is returned', t => {
   t.plan(2);
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -71,7 +71,7 @@ test('getServices should reject when bad JSON is returned', t => {
     });
 });
 
-test('getServices should reject when the get call errors', t => {
+test('.getServices() should reject when errors are returned', t => {
   t.plan(1);
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -96,8 +96,7 @@ test('services should be filtered according to predicate', t => {
   t.deepEqual(services, [mockServices[0]]);
 });
 
-test('an array should be returned from prepClone', t => {
-
+test('an array should be returned from .prepClone()', t => {
   t.plan(2);
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -115,8 +114,7 @@ test('an array should be returned from prepClone', t => {
     });
 });
 
-test('clone should execute 2 promises', async t => {
-
+test('.clone() should resolve 2 cloneTask promises', async t => {
   t.plan(1);
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -127,7 +125,7 @@ test('clone should execute 2 promises', async t => {
     resolve();
   });
 
-  const services = await serviceCatalogue.getServices()
+  await serviceCatalogue.getServices()
     .then(services => serviceCatalogue.filterServices(services, serviceName => {
       return true;
     }))
@@ -138,16 +136,17 @@ test('clone should execute 2 promises', async t => {
 });
 
 
-test('clone should error when a cloneTask promise is rejected', t => {
-
+test('.clone() should error when a cloneTask promise is rejected', t => {
   t.plan(1);
+
+  const mockError = 'mock error';
 
   nock(`${config.api.protocol}://${config.api.host}:443`)
     .get(config.api.path)
     .reply(200, mockServices);
 
   const cloneTaskRejection = (resolve, reject) => {
-    reject(new Error('mock error'));
+    reject(new Error(mockError));
   };
 
   return serviceCatalogue.getServices()
@@ -157,7 +156,7 @@ test('clone should error when a cloneTask promise is rejected', t => {
     .then(filteredServices => serviceCatalogue.prepClone(filteredServices, cloneTaskRejection))
     .then(cloneTasks => serviceCatalogue.clone(cloneTasks))
     .catch(err => {
-      t.is(err, 'mock error');
+      t.is(err, mockError);
     });
 });
 
