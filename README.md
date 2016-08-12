@@ -3,19 +3,13 @@ A tool that clones all `-frontend` service repositories and any white-listed ser
 
 ### Requirements
 
-* [Node.js](https://nodejs.org/en/) `>= 6.0.0`
-* [npm](https://www.npmjs.com/) `>= 3.10.3`
-
-#### [Node.js](https://nodejs.org/en/) & [npm](https://www.npmjs.com/)
+* [Node.js](https://nodejs.org/en/) `>= 4.0.0`
+* [npm](https://www.npmjs.com/) `>= 2.14.20`
 
 To install multiple versions of Node.js, you may find it easier to use a node version manager:
 
 * [nvm](https://github.com/creationix/nvm)
 * [n](https://github.com/tj/n)
-
-#### VPN
-
-You need to be on VPN for the `component-finder` to work.
 
 ### Usage
 ```
