@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "nyc ava test/**/*.js --verbose"
+    "test": "nyc ava test/**/*.test.js --verbose"
   },
   "engines": {
     "node": ">=4.0.0",
