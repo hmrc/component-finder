@@ -1,12 +1,18 @@
 import test from 'ava';
 import isFrontendService from './../lib/utils/isFrontendService';
 
-test('service name with "-frontend" should be identified as a frontend service', t => {
-  t.plan(1);
-  t.true(isFrontendService('test-frontend'));
+const whitelist = [
+  '.*-frontend',
+  'test'
+];
+
+test('service in the whitelist should be identified as a frontend service', t => {
+  t.plan(2);
+  t.true(isFrontendService('test', whitelist));
+  t.true(isFrontendService('test-frontend', whitelist));
 });
 
-test('service name without "-frontend" should not be identified as a frontend service', t => {
+test('service not in the whitelist should not be identified as a frontend service', t => {
   t.plan(1);
-  t.false(isFrontendService('test'));
+  t.false(isFrontendService('test-service', whitelist));
 });
