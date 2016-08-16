@@ -1,9 +1,11 @@
 import test from 'ava';
-import serviceCatalogue from './../lib/serviceCatalogue';
+import nock from 'nock';
+import sinon from 'sinon';
 import config from './../config';
-const nock = require('nock');
-const sinon = require('sinon');
-let mockServices;
+import serviceCatalogue from './../lib/serviceCatalogue';
+import isFrontendService from './../lib/utils/isFrontendService';
+
+let mockServices = [];
 
 test.beforeEach(t => {
   mockServices = [
@@ -85,8 +87,6 @@ test('.getServices() should reject when errors are returned', t => {
 });
 
 test('.clone() should resolve 2 cloneTask promises', async t => {
-  t.plan(1);
-
   const cloneTaskSpy = sinon.spy(resolve => {
     resolve();
   });
