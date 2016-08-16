@@ -84,77 +84,29 @@ test('.getServices() should reject when errors are returned', t => {
     });
 });
 
-test('services should be filtered according to predicate', t => {
-  t.plan(2);
-
-  const services = serviceCatalogue
-    .filterServices(mockServices, serviceName => {
-      return serviceName !== 'testDataOther'
-    });
-
-  t.true(services instanceof Array);
-  t.deepEqual(services, [mockServices[0]]);
-});
-
-test('an array should be returned from .prepClone()', t => {
-  t.plan(2);
-
-  nock(`${config.api.protocol}://${config.api.host}:443`)
-    .get(config.api.path)
-    .reply(200, mockServices);
-
-  return serviceCatalogue.getServices()
-    .then(services => serviceCatalogue.filterServices(services, serviceName => {
-      return serviceName !== 'testDataOther'
-    }))
-    .then(filteredServices => serviceCatalogue.prepClone(filteredServices))
-    .then(cloneTasks => {
-      t.true(cloneTasks instanceof Array);
-      t.is(cloneTasks.length, 1);
-    });
-});
-
 test('.clone() should resolve 2 cloneTask promises', async t => {
   t.plan(1);
 
-  nock(`${config.api.protocol}://${config.api.host}:443`)
-    .get(config.api.path)
-    .reply(200, mockServices);
-
-  const cloneTaskSpy = sinon.spy((resolve, reject) => {
+  const cloneTaskSpy = sinon.spy(resolve => {
     resolve();
   });
 
-  await serviceCatalogue.getServices()
-    .then(services => serviceCatalogue.filterServices(services, serviceName => {
-      return true;
-    }))
-    .then(filteredServices => serviceCatalogue.prepClone(filteredServices, cloneTaskSpy))
-    .then(cloneTasks => serviceCatalogue.clone(cloneTasks));
+  await serviceCatalogue.clone(mockServices, cloneTaskSpy);
 
   t.true(cloneTaskSpy.calledTwice);
 });
 
 
-test('.clone() should error when a cloneTask promise is rejected', t => {
+test('.clone() should error when a cloneTask promise is rejected', async t => {
   t.plan(1);
 
   const mockError = 'mock error';
-
-  nock(`${config.api.protocol}://${config.api.host}:443`)
-    .get(config.api.path)
-    .reply(200, mockServices);
 
   const cloneTaskRejection = (resolve, reject) => {
     reject(new Error(mockError));
   };
 
-  return serviceCatalogue.getServices()
-    .then(services => serviceCatalogue.filterServices(services, serviceName => {
-      return true;
-    }))
-    .then(filteredServices => serviceCatalogue.prepClone(filteredServices, cloneTaskRejection))
-    .then(cloneTasks => serviceCatalogue.clone(cloneTasks))
+  await serviceCatalogue.clone(mockServices, cloneTaskRejection)
     .catch(err => {
       t.is(err, mockError);
     });
