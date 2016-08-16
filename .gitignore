@@ -3,6 +3,6 @@ npm-debug.log
 .idea
 .DS_Store
 repositories
-config.json
 .nyc_output
 coverage
+prod.env

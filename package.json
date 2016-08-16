@@ -8,7 +8,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "nyc ava test/**/*.test.js --verbose",
+    "start": "source prod.env; node index.js",
+    "test": "source test.env; nyc ava test/**/*.test.js --verbose",
     "test:watch": "npm run test -- --watch"
   },
   "engines": {
