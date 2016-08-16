@@ -12,6 +12,12 @@ To install multiple versions of Node.js, you may find it easier to use a node ve
 * [nvm](https://github.com/creationix/nvm)
 * [n](https://github.com/tj/n)
 
+### Installation
+
+```
+$ npm install
+```
+
 ### Usage
 
 ```
