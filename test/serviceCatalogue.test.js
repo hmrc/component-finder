@@ -46,8 +46,6 @@ test('.getServices() should successfully return services', async t => {
 });
 
 test('.getServices() should error/reject when statusCode is not 200', t => {
-  t.plan(1);
-
   nock(`${config.api.protocol}://${config.api.host}:443`)
     .get(config.api.path)
     .reply(404, 'URI not found');
@@ -60,8 +58,6 @@ test('.getServices() should error/reject when statusCode is not 200', t => {
 });
 
 test('.getServices() should reject when bad JSON is returned', t => {
-  t.plan(2);
-
   nock(`${config.api.protocol}://${config.api.host}:443`)
     .get(config.api.path)
     .reply(200, 'badJSON');
@@ -74,8 +70,6 @@ test('.getServices() should reject when bad JSON is returned', t => {
 });
 
 test('.getServices() should reject when errors are returned', t => {
-  t.plan(1);
-
   nock(`${config.api.protocol}://${config.api.host}:443`)
     .get(config.api.path)
     .replyWithError('something awful happened');
@@ -87,28 +81,29 @@ test('.getServices() should reject when errors are returned', t => {
 });
 
 test('.clone() should resolve 2 cloneTask promises', async t => {
-  const cloneTaskSpy = sinon.spy(resolve => {
-    resolve();
+  const cloneTaskSpy = sinon.spy(() => {
+    return new Promise(resolve => {
+      resolve(mockServices);
+    });
   });
 
-  await serviceCatalogue.clone(mockServices, cloneTaskSpy);
+  const pr = await serviceCatalogue.clone(mockServices, cloneTaskSpy);
 
   t.true(cloneTaskSpy.calledTwice);
 });
 
-
 test('.clone() should error when a cloneTask promise is rejected', async t => {
-  t.plan(1);
-
   const mockError = 'mock error';
 
-  const cloneTaskRejection = (resolve, reject) => {
-    reject(new Error(mockError));
+  const cloneTaskRejection = () => {
+    return new Promise((resolve, reject) => {
+      reject(new Error(mockError));
+    });
   };
 
   await serviceCatalogue.clone(mockServices, cloneTaskRejection)
     .catch(err => {
-      t.is(err, mockError);
+      t.true(err instanceof Error);
+      t.is(err.message, mockError);
     });
 });
-
