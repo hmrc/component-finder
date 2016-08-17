@@ -5,7 +5,7 @@ import config from './config';
 const searchString = process.argv[2];
 
 serviceCatalogue.getServices()
-  .then(services => services.filter(service => isFrontendService(service.name, config.whiteList)))
+  .then(services => services.filter(service => isFrontendService(service.name, config.whitelist)))
   .then(frontendServices => serviceCatalogue.clone(frontendServices))
   .then(() => search(searchString))
   .catch(err => console.error(err));
