@@ -1,49 +1,43 @@
 import test from 'ava';
 import nock from 'nock';
-import sinon from 'sinon';
 import config from './../config';
 import serviceCatalogue from './../lib/serviceCatalogue';
+
 const [servicesAPIPath, librariesAPIPath] = config.api.paths;
-let mockServices = [];
-let mockLibraries = [];
-
-test.beforeEach(t => {
-  mockServices = [
-    {
-      name: 'testData',
-      githubUrls: [
-        {
-          name: 'github-com',
-          displayName: 'GitHub.com',
-          url: 'https://github.com/test-url'
-        }
-      ],
-    },
-    {
-      name: 'testDataOther',
-      githubUrls: [
-        {
-          name: 'github-com',
-          displayName: 'GitHub.com',
-          url: 'https://github.com/test-url-other'
-        }
-      ],
-    }
-  ];
-
-  mockLibraries = [
-    {
-      name: 'testLibrary',
-      githubUrls: [
-        {
-          name: 'github-com',
-          displayName: 'GitHub.com',
-          url: 'https://github.com/test-url'
-        }
-      ],
-    }
-  ];
-});
+const mockServices = [
+  {
+    name: 'testData',
+    githubUrls: [
+      {
+        name: 'github-com',
+        displayName: 'GitHub.com',
+        url: 'https://github.com/test-url'
+      }
+    ],
+  },
+  {
+    name: 'testDataOther',
+    githubUrls: [
+      {
+        name: 'github-com',
+        displayName: 'GitHub.com',
+        url: 'https://github.com/test-other'
+      }
+    ],
+  }
+];
+const mockLibraries = [
+  {
+    name: 'testLibrary',
+    githubUrls: [
+      {
+        name: 'github-com',
+        displayName: 'GitHub.com',
+        url: 'https://github.com/test-library'
+      }
+    ],
+  }
+];
 
 test('.getServices() should successfully return services', async t => {
   nock(`${config.api.protocol}://${config.api.host}:443`)
@@ -88,34 +82,6 @@ test('.getServices() should reject when errors are returned', t => {
   return serviceCatalogue.getServices(servicesAPIPath)
     .catch(err => {
       t.is(err.message, 'something awful happened');
-    });
-});
-
-test('.clone() should resolve 2 cloneTask promises', async t => {
-  const cloneTaskSpy = sinon.spy(() => {
-    return new Promise(resolve => {
-      resolve(mockServices);
-    });
-  });
-
-  await serviceCatalogue.clone(mockServices, cloneTaskSpy);
-
-  t.true(cloneTaskSpy.calledTwice);
-});
-
-test('.clone() should error when a cloneTask promise is rejected', async t => {
-  const mockError = 'mock error';
-
-  const cloneTaskRejection = () => {
-    return new Promise((resolve, reject) => {
-      reject(new Error(mockError));
-    });
-  };
-
-  await serviceCatalogue.clone(mockServices, cloneTaskRejection)
-    .catch(err => {
-      t.true(err instanceof Error);
-      t.is(err.message, mockError);
     });
 });
 
