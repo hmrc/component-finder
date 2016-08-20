@@ -1,8 +1,8 @@
-node_modules
+.idea/
 target/
+coverage/
+.nyc_output/
+node_modules/
 npm-debug.log
-.idea
 .DS_Store
 config.json
-.nyc_output
-coverage

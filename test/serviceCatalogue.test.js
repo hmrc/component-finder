@@ -57,7 +57,8 @@ test('.getServices() should error/reject when statusCode is not 200', t => {
 
   return serviceCatalogue.getServices(servicesAPIPath)
     .catch(err => {
-      // there is no way of adding statusMessage directly to the response https://github.com/node-nock/nock/issues/469
+      // there is no way of adding statusMessage directly to the response
+      // https://github.com/node-nock/nock/issues/469
       t.is(err, 'ResponseCode: 404, StatusMessage: null');
     });
 });
