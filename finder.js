@@ -6,7 +6,7 @@ import isFrontendService from './lib/utils/isFrontendService';
 
 const searchString = process.argv[2];
 
-serviceCatalogue.getProjects(config.api.paths)
+serviceCatalogue.getProjects(config.api)
   .then(services => services.filter(service => isFrontendService(service.name, config.whitelist)))
   .then(frontendServices => clone(frontendServices))
   .then(() => search(searchString))
