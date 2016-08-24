@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "A tool to search markup found in frontend services",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/hmrc/component-finder.git"
+    "type": "git",
+    "url": "https://github.com/hmrc/component-finder.git"
   },
   "main": "index.js",
   "scripts": {
