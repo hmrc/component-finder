@@ -25,7 +25,7 @@ const mockServices = [
   }
 ];
 
-test('clone() should resolve 2 cloneTask promises', async t => {
+test('.clone() should resolve 2 cloneTask promises', async t => {
   const cloneTaskSpy = sinon.spy(() => {
     return new Promise(resolve => {
       resolve(mockServices);
@@ -37,7 +37,7 @@ test('clone() should resolve 2 cloneTask promises', async t => {
   t.true(cloneTaskSpy.calledTwice);
 });
 
-test('clone() should error when a cloneTask promise is rejected', async t => {
+test('.clone() should error when a cloneTask promise is rejected', async t => {
   const mockError = 'mock error';
 
   const cloneTaskRejection = () => {
