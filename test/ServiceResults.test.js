@@ -14,7 +14,7 @@ const inputLines = [
 const expectedServiceResults = [
   {
     name: 'service-name',
-    github: 'GitHub Public',
+    github: 'public',
     count: 3,
     files: [
       '/example/file/path/file.html',
@@ -24,7 +24,7 @@ const expectedServiceResults = [
   },
   {
     name: 'service-name-other',
-    github: 'GitHub Public',
+    github: 'public',
     count: 2,
     files: [
       '/example/file/path/file-other.html',
