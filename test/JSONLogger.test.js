@@ -9,9 +9,21 @@ const serviceResults = [
     github: 'public',
     count: 3,
     files: [
-      '/example/file/path/file.html',
-      '/example/file/path/file1.html',
-      '/example/file/path/file2.html'
+      {
+        'path': '/example/file/path/file.html',
+        'line': '19',
+        'match': 'example match'
+      },
+      {
+        'path': '/example/file/path/file1.html',
+        'line': '34',
+        'match': 'other example match'
+      },
+      {
+        'path': '/example/file/path/file2.html',
+        'line': '101',
+        'match': 'another example match'
+      }
     ]
   },
   {
@@ -19,8 +31,16 @@ const serviceResults = [
     github: 'public',
     count: 2,
     files: [
-      '/example/file/path/file-other.html',
-      '/example/file/path/file-other1.html'
+      {
+        'path': '/example/file/path/file-other.html',
+        'line': '1',
+        'match': 'other match'
+      },
+      {
+        'path': '/example/file/path/file-other1.html',
+        'line': '3',
+        'match': 'another other match'
+      }
     ]
   }
 ];
