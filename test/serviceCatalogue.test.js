@@ -49,24 +49,11 @@ const mockLibraries = [
   }
 ];
 
-test('.getProjects() should throw without config', t => {
-  t.throws(() => serviceCatalogue.getProjects(), 'No config object given');
-});
+const errMsg = (apiDomain) => `
+Could not connect to ${apiDomain}.
 
-test('.getProjects() should return an array of projects', async t => {
-  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
-    .get(servicesAPIPath)
-    .reply(200, mockServices);
-
-  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
-    .get(librariesAPIPath)
-    .reply(200, mockLibraries);
-
-  const projects = await serviceCatalogue.getProjects(apiConfig);
-
-  t.true(Array.isArray(projects));
-  t.is(projects.length, mockServices.length + mockLibraries.length);
-});
+Please make sure you're config details are correct
+and you are connected to a VPN if you need to be.`;
 
 test('.getServices() should successfully return services', async t => {
   nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
@@ -111,6 +98,6 @@ test('.getServices() should reject when errors are returned', t => {
 
   return serviceCatalogue.getServices(apiConfig, servicesAPIPath)
     .catch(err => {
-      t.is(err.message, 'something awful happened');
+      t.is(err, errMsg(apiConfig.host));
     });
 });
