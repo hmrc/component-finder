@@ -2,6 +2,8 @@
 
 A tool that clones all `-frontend` service repositories and any white-listed service repositories, searches their `*.html` files for a `<searchString>` and provides a list of files that contain said `<searchString>`.
 
+[![Build Status](https://travis-ci.org/hmrc/component-finder.svg?branch=master)](https://travis-ci.org/hmrc/component-finder)
+
 ### Requirements
 
 * [Node.js](https://nodejs.org/en/) `>= 4.0.0`
