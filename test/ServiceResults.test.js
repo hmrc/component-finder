@@ -4,13 +4,34 @@ import {PassThrough} from 'stream';
 
 const passThrough = new PassThrough({objectMode: true});
 const serviceResults = new ServiceResults({objectMode: true});
-const inputLines = [
-  'target/service-name-public/example/file/path/file.html:19: example match',
-  'target/service-name-public/example/file/path/file1.html:34: other example match',
-  'target/service-name-public/example/file/path/file2.html:101: another example match',
-  'target/service-name-other-public/example/file/path/file-other.html:1: other match',
-  'target/service-name-other-public/example/file/path/file-other1.html:3: another other match'
+const matchDetailInputs = [
+  {
+    filePath: 'target/service-name-public/example/file/path/file.html',
+    lineNumber: 19,
+    match: 'example match'
+  },
+  {
+    filePath: 'target/service-name-public/example/file/path/file1.html',
+    lineNumber: 34,
+    match: 'other example match'
+  },
+  {
+    filePath: 'target/service-name-public/example/file/path/file2.html',
+    lineNumber: 101,
+    match: 'another example match'
+  },
+  {
+    filePath: 'target/service-name-other-public/example/file/path/file-other.html',
+    lineNumber: 1,
+    match: 'other match'
+  },
+  {
+    filePath: 'target/service-name-other-public/example/file/path/file-other1.html',
+    lineNumber: 3,
+    match: 'another other match'
+  }
 ];
+
 const expectedServiceResults = [
   {
     name: 'service-name',
@@ -19,17 +40,17 @@ const expectedServiceResults = [
     files: [
       {
         'path': '/example/file/path/file.html',
-        'line': '19',
+        'line': 19,
         'match': 'example match'
       },
       {
         'path': '/example/file/path/file1.html',
-        'line': '34',
+        'line': 34,
         'match': 'other example match'
       },
       {
         'path': '/example/file/path/file2.html',
-        'line': '101',
+        'line': 101,
         'match': 'another example match'
       }
     ]
@@ -41,12 +62,12 @@ const expectedServiceResults = [
     files: [
       {
         'path': '/example/file/path/file-other.html',
-        'line': '1',
+        'line': 1,
         'match': 'other match'
       },
       {
         'path': '/example/file/path/file-other1.html',
-        'line': '3',
+        'line': 3,
         'match': 'another other match'
       }
     ]
@@ -56,7 +77,7 @@ const expectedServiceResults = [
 test('service results created from lined input should be provided to consumer', async t => {
   let count = 0;
 
-  inputLines.forEach(line => passThrough.write(line));
+  matchDetailInputs.forEach(matchDetail => passThrough.write(matchDetail));
   passThrough.end();
 
   await passThrough
