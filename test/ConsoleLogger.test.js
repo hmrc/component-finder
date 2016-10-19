@@ -26,6 +26,7 @@ const serviceResults = [
 ];
 
 test.before(t => sinon.stub(console, 'log'));
+test.before(t => sinon.stub(process.stdout, 'write'));
 
 test.after(t => console.log.restore());
 
@@ -39,6 +40,27 @@ test('Service result objects should be provided to consumer one by one', async t
 
   await passThrough
     .pipe(consoleLogger)
-    .on('data', data => t.deepEqual(data, serviceResults[count++]));
+    .on('data', data => {
+      if (count !== serviceResults.length) {
+        t.deepEqual(data, serviceResults[count++])
+      }
+    });
 });
 
+test('Totals should be output at the end', async t => {
+  const consoleLogger = new ConsoleLogger({objectMode: true});
+  const passThrough = new PassThrough({objectMode: true});
+  let count = 0;
+
+  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
+  passThrough.end();
+
+  await passThrough
+    .pipe(consoleLogger)
+    .on('data', data => {
+      if (count === serviceResults.length) {
+        t.is(data, '5 occurences found in 2 projects');
+      };
+      count++;
+    });
+});
