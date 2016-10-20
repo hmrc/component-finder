@@ -25,10 +25,15 @@ const serviceResults = [
   }
 ];
 
-test.before(t => sinon.stub(console, 'log'));
-test.before(t => sinon.stub(process.stdout, 'write'));
+test.before(t => {
+  sinon.stub(console, 'log');
+  sinon.stub(process.stdout, 'write');
+});
 
-test.after(t => console.log.restore());
+test.after(t => {
+  console.log.restore();
+  process.stdout.write.restore();
+});
 
 test('Service result objects should be provided to consumer one by one', async t => {
   const consoleLogger = new ConsoleLogger({objectMode: true});
