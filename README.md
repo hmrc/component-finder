@@ -37,7 +37,9 @@ Clone this repo and install its dependencies...
 $ npm install
 ```
 
-You'll then need to duplicate the `config.sample.json` file as `config.json` and update its contents...
+Then you'll need to tell it where to get a list of repos from to search.
+
+Duplicate the `config.sample.json` file, naming it `config.json`, and update its contents accordingly...
 
 ```
 {
@@ -56,6 +58,7 @@ You'll then need to duplicate the `config.sample.json` file as `config.json` and
 * **api.host**: The domain name of the API to fetch a list of repos from (**Required**)
 * **api.paths**: The endpoint(s) of the API to fetch a list of repos from (**Required**)
 * **api.headers**: Any request headers that the API requires (such as auth tokens) (**Optional**)
+* **whitelist**: Regex pattern(s) for filtering the list of repos with (**Optional**)
 
 
 ## Usage
@@ -121,6 +124,7 @@ To run tests continually with a watch task...
 ```
 $ npm run test:watch
 ```
+
 
 ## License
 
