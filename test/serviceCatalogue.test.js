@@ -55,7 +55,7 @@ Could not connect to ${apiDomain}.
 Please make sure you're config details are correct
 and you are connected to a VPN if you need to be.`;
 
-test('.getProjects() should barf without config', t => {
+test('.getProjects() should throw without config', t => {
   t.throws(() => serviceCatalogue.getProjects(), 'No config object given');
 });
 
