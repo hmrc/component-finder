@@ -49,7 +49,7 @@ const mockLibraries = [
   }
 ];
 
-test('.getProjects() should barf without config', t => {
+test('.getProjects() should throw without config', t => {
   t.throws(() => serviceCatalogue.getProjects(), 'No config object given');
 });
 
