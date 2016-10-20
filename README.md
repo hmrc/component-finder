@@ -6,6 +6,8 @@ A tool to search repositories for a string.
 
 ```
 $ node index.js foo
+# or
+$ component-finder foo
 ```
 
 
@@ -65,6 +67,8 @@ Duplicate the `config.sample.json` file, naming it `config.json`, and update its
 
 ```
 $ node index.js searchString
+# or
+$ component-finder searchString
 ```
 Where `searchString`...
 
