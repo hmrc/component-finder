@@ -35,37 +35,19 @@ test.after(t => {
   process.stdout.write.restore();
 });
 
-test('Service result objects should be provided to consumer one by one', async t => {
+test('ConsoleLogger should output results one by one followed by totals', async t => {
   const consoleLogger = new ConsoleLogger({objectMode: true});
   const passThrough = new PassThrough({objectMode: true});
+
+  let expectedData = serviceResults.slice(0);
   let count = 0;
+
+  expectedData.push('5 occurences found in 2 projects');
 
   serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
   passThrough.end();
 
   await passThrough
     .pipe(consoleLogger)
-    .on('data', data => {
-      if (count !== serviceResults.length) {
-        t.deepEqual(data, serviceResults[count++])
-      }
-    });
-});
-
-test('Totals should be output at the end', async t => {
-  const consoleLogger = new ConsoleLogger({objectMode: true});
-  const passThrough = new PassThrough({objectMode: true});
-  let count = 0;
-
-  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
-  passThrough.end();
-
-  await passThrough
-    .pipe(consoleLogger)
-    .on('data', data => {
-      if (count === serviceResults.length) {
-        t.is(data, '5 occurences found in 2 projects');
-      };
-      count++;
-    });
+    .on('data', (data) => t.deepEqual(data, expectedData[count++]));
 });
