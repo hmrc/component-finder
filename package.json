@@ -7,6 +7,9 @@
     "url": "https://github.com/hmrc/component-finder.git"
   },
   "main": "index.js",
+  "bin": {
+    "component-finder": "bin/component-finder.js"
+  },
   "scripts": {
     "test": "nyc ava test/**/*.test.js --verbose",
     "test:watch": "npm run test -- --watch"

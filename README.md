@@ -23,7 +23,7 @@ $ npm install
 ### Usage
 
 ```
-$ node index.js <searchString>
+$ component-finder <searchString>
 ```
 
 ### Tests
