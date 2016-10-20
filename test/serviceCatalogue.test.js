@@ -55,6 +55,25 @@ Could not connect to ${apiDomain}.
 Please make sure you're config details are correct
 and you are connected to a VPN if you need to be.`;
 
+test('.getProjects() should barf without config', t => {
+  t.throws(() => serviceCatalogue.getProjects(), 'No config object given');
+});
+
+test('.getProjects() should return an array of projects', async t => {
+  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
+    .get(servicesAPIPath)
+    .reply(200, mockServices);
+
+  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
+    .get(librariesAPIPath)
+    .reply(200, mockLibraries);
+
+  const projects = await serviceCatalogue.getProjects(apiConfig);
+
+  t.true(Array.isArray(projects));
+  t.is(projects.length, mockServices.length + mockLibraries.length);
+});
+
 test('.getServices() should successfully return services', async t => {
   nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
     .get(servicesAPIPath)
