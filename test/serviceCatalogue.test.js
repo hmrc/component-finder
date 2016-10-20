@@ -1,10 +1,18 @@
 import test from 'ava';
 import nock from 'nock';
-import config from './../config';
 import serviceCatalogue from './../lib/serviceCatalogue';
 
-const apiConfig = config.api;
+const apiConfig = {
+  "protocol": "http",
+  "host": "localhost",
+  "paths": [
+    "/endpoint-one",
+    "/endpoint-two"
+  ]
+};
+
 const [servicesAPIPath, librariesAPIPath] = apiConfig.paths;
+
 const mockServices = [
   {
     name: 'testData',
@@ -27,6 +35,7 @@ const mockServices = [
     ],
   }
 ];
+
 const mockLibraries = [
   {
     name: 'testLibrary',
@@ -39,6 +48,25 @@ const mockLibraries = [
     ],
   }
 ];
+
+test('.getProjects() should barf without config', t => {
+  t.throws(() => serviceCatalogue.getProjects(), 'No config object given');
+});
+
+test('.getProjects() should return an array of projects', async t => {
+  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
+    .get(servicesAPIPath)
+    .reply(200, mockServices);
+
+  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
+    .get(librariesAPIPath)
+    .reply(200, mockLibraries);
+
+  const projects = await serviceCatalogue.getProjects(apiConfig);
+
+  t.true(Array.isArray(projects));
+  t.is(projects.length, mockServices.length + mockLibraries.length);
+});
 
 test('.getServices() should successfully return services', async t => {
   nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
@@ -85,19 +113,4 @@ test('.getServices() should reject when errors are returned', t => {
     .catch(err => {
       t.is(err.message, 'something awful happened');
     });
-});
-
-test('.getProjects() should return an array of projects', async t => {
-  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
-    .get(servicesAPIPath)
-    .reply(200, mockServices);
-
-  nock(`${apiConfig.protocol}://${apiConfig.host}:443`)
-    .get(librariesAPIPath)
-    .reply(200, mockLibraries);
-
-  const projects = await serviceCatalogue.getProjects(apiConfig);
-
-  t.true(Array.isArray(projects));
-  t.is(projects.length, mockServices.length + mockLibraries.length);
 });
