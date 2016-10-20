@@ -69,7 +69,7 @@ $ node index.js searchString
 Where `searchString`...
 
 * Is the exact string to search for
-* Should not include and punctuation at the beginning of selectors
+* Should not include punctuation at the beginning of selectors
 	* `.className` should be `className`
 	* `#idName` should be `idName`
 
