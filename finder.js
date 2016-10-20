@@ -6,10 +6,10 @@ import serviceCatalogue from './lib/serviceCatalogue';
 import isFrontendService from './lib/utils/isFrontendService';
 
 try {
-  var config = require('./config.json');
+  const config = require('./config.json');
 }
 catch(err) {
-  process.stdout.write(`No config.json file found ${EOL}`);
+  process.stdout.write(`${EOL}No config.json file found.${EOL}Please see README.md for details.${EOL}`);
   process.exit();
 };
 
