@@ -42,7 +42,7 @@ test('ConsoleLogger should output results one by one followed by totals', async 
   let expectedData = serviceResults.slice(0);
   let count = 0;
 
-  expectedData.push('5 occurences found in 2 projects');
+  expectedData.push('5 occurrences found in 2 projects');
 
   serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
   passThrough.end();
