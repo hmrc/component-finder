@@ -44,16 +44,21 @@ const serviceResults = [
     ]
   }
 ];
+const searchTerm = 'example-css-rule';
+const resultsDir = './results';
 
 let jsonLogger;
 let passThrough;
 
 test.beforeEach(t => {
-  jsonLogger = new JSONLogger({objectMode: true});
+  jsonLogger = new JSONLogger({objectMode: true}, [searchTerm]);
   passThrough = new PassThrough({objectMode: true});
 });
 
-test.after(t => fs.unlinkSync('results.json'));
+test.after(t => {
+  fs.unlinkSync(`${resultsDir}/${searchTerm}.json`);
+  fs.rmdirSync(resultsDir);
+});
 
 test('Service results object should be provided to consumer object by object', async t => {
   let count = 0;
@@ -73,9 +78,19 @@ test('JSON service results object should be written to results.json', async t =>
   await passThrough
     .pipe(jsonLogger)
     .on('finish', () => {
-      const data = fs.readFileSync('results.json', 'utf8');
+      const data = fs.readFileSync(`${resultsDir}/${searchTerm}.json`, 'utf8');
       const json = JSON.parse(data);
 
       t.deepEqual(json, serviceResults);
     });
+});
+
+test(`${resultsDir} should be created if it does not exist`, async t => {
+  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
+  passThrough.end();
+
+  await passThrough
+    .pipe(jsonLogger)
+    .on('data', () => t.true(!fs.existsSync(resultsDir)))
+    .on('finish', () => t.true(fs.existsSync(resultsDir)));
 });
