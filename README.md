@@ -106,6 +106,15 @@ E.g a `searchString` of `.className, .className-other, .className-another` will 
 * `className-another`
 > When using Chained CSS selector rules your searchString needs to be quoted
 
+### Sanitization
+Input is cleaned up before a search is performed. The following characters are removed from `searchString` input:
+* `>`
+* `~`
+* `*`
+* `+`
+* `[disabled]` (attribute selectors)
+* `   ` (extraneous whitespace)
+
 #### Results
 
 Results appear in the console like this...
