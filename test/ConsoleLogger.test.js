@@ -36,13 +36,13 @@ test.after(t => {
 });
 
 test('ConsoleLogger should output results one by one followed by totals', async t => {
-  const consoleLogger = new ConsoleLogger({objectMode: true});
+  const consoleLogger = new ConsoleLogger({objectMode: true}, ['example-css-rule']);
   const passThrough = new PassThrough({objectMode: true});
 
   let expectedData = serviceResults.slice(0);
   let count = 0;
 
-  expectedData.push('5 occurrences found in 2 projects');
+  expectedData.push('5 occurrences found in 2 projects for "example-css-rule"');
 
   serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
   passThrough.end();

@@ -1,6 +1,7 @@
 import {EOL} from 'os';
 import clone from './lib/clone';
-import search from './lib/search';
+import {searchMarkup as search} from './lib/search';
+import sanitizer from './lib/utils/sanitizer';
 import serviceCatalogue from './lib/serviceCatalogue';
 import isFrontendService from './lib/utils/isFrontendService';
 
@@ -13,9 +14,10 @@ catch(err) {
 };
 
 const searchString = process.argv[2];
+const sanitisedSearchTerms = sanitizer(searchString);
 
 serviceCatalogue.getProjects(config.api)
   .then(services => services.filter(service => isFrontendService(service.name, config.whitelist)))
   .then(frontendServices => clone(frontendServices))
-  .then(() => search(searchString))
+  .then(() => search(sanitisedSearchTerms, 'target/**/*.html'))
   .catch(err => console.error(err));

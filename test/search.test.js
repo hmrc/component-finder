@@ -2,14 +2,13 @@ import test from 'ava';
 import sinon from 'sinon';
 import glob from 'glob';
 import minimatch from 'minimatch';
-import FindFiles from './../lib/streams/FindFiles';
+import {getFilePaths} from '../lib/search';
 
 const files = [
   'test1.html',
   'test2.js',
-  'node_modules/test3.html',
-  'target/test4.html',
-  'target/test5.js'
+  'target/test3.html',
+  'target/test4.js'
 ];
 const globSyncStub = sinon.stub(glob, 'sync', (pattern) => {
   return files.filter((file) => minimatch(file, pattern));
@@ -18,16 +17,14 @@ const globSyncStub = sinon.stub(glob, 'sync', (pattern) => {
 test.after('cleanup', t => globSyncStub.restore());
 
 test('file should be html file inside target dir', async t => {
-  const findFiles = new FindFiles({objectMode: true}, 'target/**/*.html');
+  const retrievedFiles = getFilePaths('target/**/*.html');
 
-  await findFiles
-    .on('data', file => t.is(file, files[3]));
+  t.true(retrievedFiles.length === 1);
+  t.is(retrievedFiles[0], files[2]);
 });
 
 test('files should be returned line by line', async t => {
-  const findFiles = new FindFiles({objectMode: true}, '*');
-  let count = 0;
+  const retrievedFiles = getFilePaths('*');
 
-  await findFiles
-    .on('data', file => t.is(file, files[count++]));
+  retrievedFiles.forEach((retrievedFile, i) => t.is(retrievedFile, files[i]));
 });

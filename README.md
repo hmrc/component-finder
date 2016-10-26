@@ -30,6 +30,10 @@ To install multiple versions of Node.js, you may find it easier to use a node ve
 * [nvm](https://github.com/creationix/nvm)
 * [n](https://github.com/tj/n)
 
+### GitHub SSH keys
+This tool clones your GitHub repositories via SSH. To search these repositories please generate any relevant GitHub SSH 
+keys.
+For further information: [generating-an-ssh-key](https://help.github.com/articles/generating-an-ssh-key) 
 
 ## Installation
 
@@ -72,10 +76,44 @@ $ component-finder searchString
 ```
 Where `searchString`...
 
-* Is the exact string to search for
-* Should not include punctuation at the beginning of selectors
-	* `.className` should be `className`
-	* `#idName` should be `idName`
+* Is the exact string
+** `searchString`
+* A single CSS selector rule
+** `.className` or `#id`
+* CSS selector rule with child
+** `.className .className-child`
+* Multiple CSS selector rules
+** `"#id .className, .className .className-child:psuedo"` 
+
+### A single CSS selector rule
+`.`, `#` and `:psuedo-selectors` are removed from CSS selectors. 
+E.g a `searchString` of:
+* `.className` will search for `className`
+* `#id` will search for `id`
+* `.className:before` will search for `className`.
+> If searching for an id with a # symbol your searchString needs to be quoted
+
+### CSS selector rule with child
+When a CSS selector rule has children only the furthest descendant child will be searched for. 
+E.g a `searchString` of `.className .className-child` will search for `className-child`. 
+> When using child selectors your searchString needs to be quoted
+
+### Chained CSS selector rules
+Chained CSS selector rules are supported. 
+E.g a `searchString` of `.className, .className-other, .className-another` will search for all three rules:
+* `className`
+* `className-other`
+* `className-another`
+> When using Chained CSS selector rules your searchString needs to be quoted
+
+### Sanitization
+Input is cleaned up before a search is performed. The following characters are removed from `searchString` input:
+* `>`
+* `~`
+* `*`
+* `+`
+* `[disabled]` (attribute selectors)
+* `   ` (extraneous whitespace)
 
 #### Results
 
@@ -89,7 +127,7 @@ repository-name (enterprise|public) [n]
 * **(enterprise|public)**: Whether the repository lives in the open or in an enterprise instance of github
 * **[n]**: The number of occurrences of `searchString` in `repository-name`
 
-They are also saved to a `results.json` file like this...
+They are also saved to a file `/results/searchString.json` inside the `/results` directory, like this...
 
 ```
  {
@@ -110,6 +148,7 @@ They are also saved to a `results.json` file like this...
 * **files.line**: The line in the file where the match occurs
 * **files.match**: The actual match that was found in the file
 
+> The results file is named according to your searchString
 
 ## Contributing
 
