@@ -25,6 +25,10 @@ const mockServices = [
   }
 ];
 
+test.before(t => sinon.stub(process.stdout, 'write'));
+
+test.after(t => process.stdout.write.restore());
+
 test('.clone() should resolve 2 cloneTask promises', async t => {
   const cloneTaskSpy = sinon.spy(() => {
     return new Promise(resolve => {
