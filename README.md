@@ -72,10 +72,34 @@ $ component-finder searchString
 ```
 Where `searchString`...
 
-* Is the exact string to search for
-* Should not include punctuation at the beginning of selectors
-	* `.className` should be `className`
-	* `#idName` should be `idName`
+* Is the exact string
+** `searchString`
+* A single CSS selector rule
+** `.className` or `#id`
+* CSS selector rule with child
+** `.className .className-child`
+
+### A single CSS selector rule
+`.`, `#` and `:psuedo-selectors` are removed from CSS selectors. 
+E.g a `searchString` of:
+* `.className` will search for `className`
+* `#id` will search for `id`
+* `.className:before` will search for `className`.
+> If searching for an id with a # symbol your searchString needs to be quoted
+
+### CSS selector rule with child
+When a CSS selector rule has children only the furthest descendant child will be searched for. 
+E.g a `searchString` of `.className .className-child` will search for `className-child`. 
+> When using child selectors your searchString needs to be quoted
+
+### Sanitization
+Input is cleaned up before a search is performed. The following characters are removed from `searchString` input:
+* `>`
+* `~`
+* `*`
+* `+`
+* `[disabled]` (attribute selectors)
+* `   ` (extraneous whitespace)
 
 #### Results
 
