@@ -30,6 +30,10 @@ To install multiple versions of Node.js, you may find it easier to use a node ve
 * [nvm](https://github.com/creationix/nvm)
 * [n](https://github.com/tj/n)
 
+### GitHub SSH keys
+This tool clones your GitHub repositories via SSH. To search these repositories please generate any relevant GitHub SSH
+keys.
+For further information: [generating-an-ssh-key](https://help.github.com/articles/generating-an-ssh-key) 
 
 ## Installation
 
