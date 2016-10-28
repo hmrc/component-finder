@@ -89,11 +89,13 @@ E.g a `searchString` of:
 * `.className` will search for `className`
 * `#id` will search for `id`
 * `.className:before` will search for `className`.
+
 > If searching for an id with a # symbol your searchString needs to be quoted
 
 ### CSS selector rule with child
 When a CSS selector rule has children only the furthest descendant child will be searched for. 
 E.g a `searchString` of `.className .className-child` will search for `className-child`. 
+
 > When using child selectors your searchString needs to be quoted
 
 ### Sanitization
