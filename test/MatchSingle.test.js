@@ -29,38 +29,17 @@ test('searchString match should return correct details', async t => {
     lineNumber: 2,
     match: searchString
   };
+  let matchFound = false;
 
   passThrough.write(path);
   passThrough.end();
 
   await passThrough
     .pipe(match)
-    .on('data', item => t.deepEqual(item, expectedResult));
-});
-
-test('multiple searchString matches should return correct details', async t => {
-
-  const searchString = 'test4';
-  const match = new Match({objectMode: true}, searchString);
-  const passThrough = new PassThrough({objectMode: true});
-  const expectedResults = [
-    {
-      filePath: path,
-      lineNumber: 3,
-      match: searchString
-    },
-    {
-      filePath: path,
-      lineNumber: 5,
-      match: searchString
-    }
-  ];
-  let count = 0;
-
-  passThrough.write(path);
-  passThrough.end();
-
-  await passThrough
-    .pipe(match)
-    .on('data', item => t.deepEqual(item, expectedResults[count++]));
+    .on('data', item => {
+      matchFound = true;
+      return t.deepEqual(item, expectedResult);
+    });
+  
+  t.is(matchFound, true);
 });
