@@ -13,11 +13,17 @@ catch(err) {
   process.exit();
 };
 
+let fileExtension;
+
 const searchString = process.argv[2];
+const searchMode = process.argv[3] || '';
 const sanitisedSearchString = sanitizer(searchString);
+
+console.log('Sanitised Search String : ', sanitisedSearchString);
+console.log('Search Mode : ', searchMode);
 
 serviceCatalogue.getProjects(config.api)
   .then(services => services.filter(service => isFrontendService(service.name, config.whitelist)))
   .then(frontendServices => clone(frontendServices))
-  .then(() => search(sanitisedSearchString))
+  .then(() => search(sanitisedSearchString, fileExtension, searchMode))
   .catch(err => console.error(err));

@@ -62,5 +62,5 @@ test('multiple searchString matches should return correct details', async t => {
 
   await passThrough
     .pipe(match)
-    .on('data', (item) => t.deepEqual(item, expectedResults[count++]));
+    .on('data', item => t.deepEqual(item, expectedResults[count++]));
 });
