@@ -13,17 +13,20 @@ catch(err) {
   process.exit();
 };
 
-let fileExtension;
-
 const searchString = process.argv[2];
 const searchMode = process.argv[3] || '';
+const fileExtension = process.argv[4] || 'html';
 const sanitisedSearchString = sanitizer(searchString);
+const searchOptions = {
+  searchString: sanitisedSearchString,
+  fileExtension,
+  searchMode
+}
 
-console.log('Sanitised Search String : ', sanitisedSearchString);
-console.log('Search Mode : ', searchMode);
+console.log('Search Options : ', searchOptions);
 
 serviceCatalogue.getProjects(config.api)
   .then(services => services.filter(service => isFrontendService(service.name, config.whitelist)))
   .then(frontendServices => clone(frontendServices))
-  .then(() => search(sanitisedSearchString, fileExtension, searchMode))
+  .then(() => search(searchOptions))
   .catch(err => console.error(err));

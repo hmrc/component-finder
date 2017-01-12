@@ -24,9 +24,11 @@ const fsStub = sinon.stub(fs, 'readFileSync', () => {
 test.after('cleanup', t => fsStub.restore());
 
 test('with -c flag, lines only match against the class regex', async t => {
-  const searchString = 'tag';
-  const searchMode = '-c';
-  const match = new Match({objectMode: true}, searchString, searchMode);
+  const searchOptions = {
+    searchString: 'tag',
+    searchMode: '-c'
+  };
+  const match = new Match({objectMode: true}, searchOptions);
   const passThrough = new PassThrough({objectMode: true});
   const expectedResults = [
     {

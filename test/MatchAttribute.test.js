@@ -22,9 +22,11 @@ const fsStub = sinon.stub(fs, 'readFileSync', () => {
 test.after('cleanup', t => fsStub.restore());
 
 test('with -a flag, lines only match against the attribute regex', async t => {
-  const searchString = 'tag';
-  const searchMode = '-a';
-  const match = new Match({objectMode: true}, searchString, searchMode);
+  const searchOptions = {
+    searchString: 'tag',
+    searchMode: '-a'
+  };
+  const match = new Match({objectMode: true}, searchOptions);
   const passThrough = new PassThrough({objectMode: true});
   const expectedResults = [
     {

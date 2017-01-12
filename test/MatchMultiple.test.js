@@ -20,20 +20,21 @@ const fsStub = sinon.stub(fs, 'readFileSync', () => {
 test.after('cleanup', t => fsStub.restore());
 
 test('multiple searchString matches should return correct details', async t => {
-
-  const searchString = 'test4';
-  const match = new Match({objectMode: true}, searchString);
+  const searchOptions = {
+    searchString: 'test4'
+  };
+  const match = new Match({objectMode: true}, searchOptions);
   const passThrough = new PassThrough({objectMode: true});
   const expectedResults = [
     {
       filePath: path,
       lineNumber: 3,
-      match: searchString
+      match: searchOptions.searchString
     },
     {
       filePath: path,
       lineNumber: 5,
-      match: searchString
+      match: searchOptions.searchString
     }
   ];
   let count = 0;
