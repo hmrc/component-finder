@@ -2,8 +2,10 @@ import test from 'ava';
 import fs from 'fs';
 import sinon from 'sinon';
 import {EOL as newline} from 'os';
-import Match from './../lib/streams/Match';
 import {PassThrough} from 'stream';
+
+import Match from './../lib/streams/Match';
+import {CONSTANTS} from './../lib/utils/constants';
 
 const path = 'target/example-frontend-enterprise/app/views/example.scala.html'
 const lineArray = [
@@ -26,7 +28,7 @@ test.after('cleanup', t => fsStub.restore());
 test('with -c flag, lines only match against the class regex', async t => {
   const searchOptions = {
     searchString: 'tag',
-    searchMode: '-c'
+    searchMode: CONSTANTS.CLASS
   };
   const match = new Match({objectMode: true}, searchOptions);
   const passThrough = new PassThrough({objectMode: true});
