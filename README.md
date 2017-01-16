@@ -8,6 +8,8 @@ A tool to search repositories for a string.
 $ node index.js foo
 # or
 $ component-finder foo
+# or
+$ ./cf foo
 ```
 
 
@@ -73,6 +75,8 @@ Duplicate the `config.sample.json` file, naming it `config.json`, and update its
 $ node index.js searchString
 # or
 $ component-finder searchString
+# or
+$ ./cf searchString
 ```
 Where `searchString`...
 
@@ -107,7 +111,46 @@ Input is cleaned up before a search is performed. The following characters are r
 * `[disabled]` (attribute selectors)
 * `   ` (extraneous whitespace)
 
-#### Results
+### Advanced Options
+
+The advanced flags listed below must be listed **AFTER** the searchstring. The following is correct :
+
+`./cf searchString -c`
+
+The following command will not perform as expected, and will search for `-c`, because the real searchstring follows another option flag:
+
+`./cf -c searchstring`
+
+
+#### File Extensions
+
+By default, component finder searches through html files. You can modify or expand the search to include other file types with the `-f` flag and including a comma separated list of file extensions. This list should not include 'dot's or spaces. If it does include spaces, it should be enclosed in quotes :
+
+e.g. `node index.js searchstring -f html,scala`
+
+e.g. `node index.js searchstring -f jade`
+
+#### Search Mode
+
+You can restrict your search to HTML Classes, Tags, or Attributes using the following flags listed below. These flags are mutually exclusive, in that you can only submit a search for classes or tags or attributes, not combinations.
+
+##### HTML Classes Search Mode
+Pass a `-c` flag to the search to try and find it's use within HTML classes :
+
+e.g. `node index.js searchString -c`
+
+##### HTML Tags Search Mode (i.e. Element Names)
+Pass a `-t` flag to search for element tag names. For example to search for the `<code>` element :
+
+`component-finder code -t`
+
+##### HTML Attributes Search Mode
+Pass a `-a` flag to search for HTML attributes such as `data-sticky-nav` :
+
+`./cf data-sticky-nav -a`
+
+
+### Results
 
 Results appear in the console like this...
 
