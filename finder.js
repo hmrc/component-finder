@@ -5,12 +5,13 @@ import sanitizer from './lib/utils/sanitizer';
 import serviceCatalogue from './lib/serviceCatalogue';
 import isFrontendService from './lib/utils/isFrontendService';
 import parseOptions from './lib/utils/parseOptions';
+import {ERRORS} from './lib/utils/constants';
 
 try {
   var config = require('./config.json');
 }
 catch(err) {
-  process.stdout.write(`${EOL}No config.json file found.${EOL}Please see README.md for details.${EOL}${EOL}`);
+  process.stdout.write(ERRORS.NO_CONFIG);
   process.exit(1);
 };
 

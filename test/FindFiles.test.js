@@ -17,17 +17,19 @@ const globSyncStub = sinon.stub(glob, 'sync', (pattern) => {
 
 test.after('cleanup', t => globSyncStub.restore());
 
-test('file should be html file inside target dir', async t => {
+test.serial('file should be html file inside target dir', async t => {
   const findFiles = new FindFiles({objectMode: true}, 'target/**/*.html');
 
+  t.plan(1);
   await findFiles
     .on('data', file => t.is(file, files[3]));
 });
 
-test('files should be returned line by line', async t => {
+test.serial('files should be returned line by line', async t => {
   const findFiles = new FindFiles({objectMode: true}, '*');
   let count = 0;
 
+  t.plan(2); // only 2 as not using directory glob - '**/*'
   await findFiles
     .on('data', file => t.is(file, files[count++]));
 });

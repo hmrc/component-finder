@@ -16,6 +16,7 @@ test('output from stream should be provided to consumer item by item', async t =
   passThrough.write(items);
   passThrough.end();
 
+  t.plan(3);
   await passThrough
     .pipe(itemByItem)
     .on('data', item => t.is(item, items[count++]));

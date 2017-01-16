@@ -57,9 +57,8 @@ test('with -a flag, lines only match against the attribute regex', async t => {
   passThrough.write(path);
   passThrough.end();
 
+  t.plan(expectedResults.length);
   await passThrough
     .pipe(match)
     .on('data', item => t.deepEqual(item, expectedResults[count++]));
-
-  t.is(count, expectedResults.length);
 });

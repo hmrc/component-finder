@@ -44,9 +44,8 @@ test('with -t flag, lines only match against the tag regex', async t => {
   passThrough.write(path);
   passThrough.end();
 
+  t.plan(expectedResults.length);
   await passThrough
     .pipe(match)
     .on('data', item => t.deepEqual(item, expectedResults[count++]));
-
-  t.is(count, expectedResults.length);
 });

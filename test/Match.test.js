@@ -19,7 +19,7 @@ const fsStub = sinon.stub(fs, 'readFileSync', () => {
 
 test.after('cleanup', t => fsStub.restore());
 
-test('searchString match should return correct details', async t => {
+test.serial('searchString match should return correct details', async t => {
   const searchOptions = {
     searchString: 'test3'
   };
@@ -43,4 +43,33 @@ test('searchString match should return correct details', async t => {
     });
   
   t.is(matchFound, true);
+});
+
+test.serial('multiple searchString matches should return correct details', async t => {
+  const searchOptions = {
+    searchString: 'test4'
+  };
+  const match = new Match({objectMode: true}, searchOptions);
+  const passThrough = new PassThrough({objectMode: true});
+  const expectedResults = [
+    {
+      filePath: path,
+      lineNumber: 3,
+      match: searchOptions.searchString
+    },
+    {
+      filePath: path,
+      lineNumber: 5,
+      match: searchOptions.searchString
+    }
+  ];
+  let count = 0;
+
+  passThrough.write(path);
+  passThrough.end();
+
+  t.plan(expectedResults.length);
+  await passThrough
+    .pipe(match)
+    .on('data', item => t.deepEqual(item, expectedResults[count++]));
 });
