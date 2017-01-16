@@ -19,40 +19,48 @@ const fsStub = sinon.stub(fs, 'readFileSync', () => {
 
 test.after('cleanup', t => fsStub.restore());
 
-test('searchString match should return correct details', async t => {
-
-  const searchString = 'test3';
-  const match = new Match({objectMode: true}, searchString);
+test.serial('searchString match should return correct details', async t => {
+  const searchOptions = {
+    searchString: 'test3'
+  };
+  const match = new Match({objectMode: true}, searchOptions);
   const passThrough = new PassThrough({objectMode: true});
   const expectedResult = {
     filePath: path,
     lineNumber: 2,
-    match: searchString
+    match: searchOptions.searchString
   };
+  let matchFound = false;
 
   passThrough.write(path);
   passThrough.end();
 
   await passThrough
     .pipe(match)
-    .on('data', item => t.deepEqual(item, expectedResult));
+    .on('data', item => {
+      matchFound = true;
+      return t.deepEqual(item, expectedResult);
+    });
+  
+  t.is(matchFound, true);
 });
 
-test('multiple searchString matches should return correct details', async t => {
-
-  const searchString = 'test4';
-  const match = new Match({objectMode: true}, searchString);
+test.serial('multiple searchString matches should return correct details', async t => {
+  const searchOptions = {
+    searchString: 'test4'
+  };
+  const match = new Match({objectMode: true}, searchOptions);
   const passThrough = new PassThrough({objectMode: true});
   const expectedResults = [
     {
       filePath: path,
       lineNumber: 3,
-      match: searchString
+      match: searchOptions.searchString
     },
     {
       filePath: path,
       lineNumber: 5,
-      match: searchString
+      match: searchOptions.searchString
     }
   ];
   let count = 0;
@@ -60,7 +68,8 @@ test('multiple searchString matches should return correct details', async t => {
   passThrough.write(path);
   passThrough.end();
 
+  t.plan(expectedResults.length);
   await passThrough
     .pipe(match)
-    .on('data', (item) => t.deepEqual(item, expectedResults[count++]));
+    .on('data', item => t.deepEqual(item, expectedResults[count++]));
 });

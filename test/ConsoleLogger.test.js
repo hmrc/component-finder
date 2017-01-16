@@ -38,16 +38,19 @@ test.after(t => {
 test('ConsoleLogger should output results one by one followed by totals', async t => {
   const consoleLogger = new ConsoleLogger({objectMode: true});
   const passThrough = new PassThrough({objectMode: true});
-
-  let expectedData = serviceResults.slice(0);
   let count = 0;
+  let expectedData = serviceResults.slice(0);
+  const expectedSummary = '5 occurrences found in 2 projects';
 
-  expectedData.push('5 occurrences found in 2 projects');
-
+  expectedData.push(expectedSummary);
   serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
   passThrough.end();
 
   await passThrough
     .pipe(consoleLogger)
-    .on('data', (data) => t.deepEqual(data, expectedData[count++]));
+    .on('data', data => t.deepEqual(data, expectedData[count++]))
+    // validate correct number of 'data' assertions
+    // t.plan(), and test of count after 'await' will not work
+    // as pushing to stream in _transform AND _flush
+    .on('finish', () => t.is(count, expectedData.length));
 });

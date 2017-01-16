@@ -1,7 +1,11 @@
 import test from 'ava';
 import nock from 'nock';
 import sinon from 'sinon';
+
 import serviceCatalogue from './../lib/serviceCatalogue';
+import {ERRORS} from './../lib/utils/constants';
+
+const errMsgFn = ERRORS.noConnection;
 
 const apiConfig = {
   "protocol": "http",
@@ -49,12 +53,6 @@ const mockLibraries = [
     ],
   }
 ];
-
-const errMsg = (apiDomain) => `
-Could not connect to ${apiDomain}.
-
-Please make sure you're config details are correct
-and you are connected to a VPN if you need to be.`;
 
 test.before(t => sinon.stub(process.stdout, 'write'));
 
@@ -122,6 +120,6 @@ test('.getServices() should reject when errors are returned', t => {
 
   return serviceCatalogue.getServices(apiConfig, servicesAPIPath)
     .catch(err => {
-      t.is(err, errMsg(apiConfig.host));
+      t.is(err, errMsgFn(apiConfig.host));
     });
 });
