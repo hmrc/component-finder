@@ -14,7 +14,7 @@ catch(err) {
   process.exit(1);
 };
 
-const searchOptions = parseOptions(process.argv.slice());
+const searchOptions = parseOptions(process.argv.slice(2));
 if (searchOptions.optionErrors.length) {
   searchOptions.optionErrors.forEach(msg => {
     process.stdout.write(msg);

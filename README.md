@@ -8,8 +8,6 @@ A tool to search repositories for a string.
 $ node index.js foo
 # or
 $ component-finder foo
-# or
-$ ./cf foo
 ```
 
 
@@ -75,8 +73,6 @@ Duplicate the `config.sample.json` file, naming it `config.json`, and update its
 $ node index.js searchString
 # or
 $ component-finder searchString
-# or
-$ ./cf searchString
 ```
 Where `searchString`...
 
@@ -113,25 +109,15 @@ Input is cleaned up before a search is performed. The following characters are r
 
 ### Advanced Options
 
-#### Search string
-
-Component Finder will take the third string on the command line as the searchString to look for **by default**.
-
-e.g. `node index.js search-for-third-argument`
-
-Or the `-s` option can be specifically used to signal the subsequent string as the searchString - this can be useful when passing other command line flags and mixing the order of arguments.
-
-For example, when used with the File Extension flag discussed below the following command will search for *"snippet"* in Markdown files :
-
-`node index.js -f md -s snippet` 
-
 #### File Extensions
 
 By default, component finder searches through html files. You can modify or expand the search to include other file types with the `-f` flag and including a comma separated list of file extensions. This list should not include 'dot's or spaces. If it does include spaces, it should be enclosed in quotes :
 
-e.g. `node index.js searchstring -f html,scala`
+e.g. `node index.js -f html,scala searchstring`
 
-e.g. `node index.js searchstring -f jade`
+e.g. `node index.js -f jade searchstring`
+
+e.g. `node index.js -f "js, java" searchstring`
 
 ### Results
 
