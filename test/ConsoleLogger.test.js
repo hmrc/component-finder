@@ -48,9 +48,6 @@ test('ConsoleLogger should output results one by one followed by totals', async 
 
   await passThrough
     .pipe(consoleLogger)
-    .on('data', data => t.deepEqual(data, expectedData[count++]))
-    // validate correct number of 'data' assertions
-    // t.plan(), and test of count after 'await' will not work
-    // as pushing to stream in _transform AND _flush
+    .on('data', (data) => t.deepEqual(data, expectedData[count++]))
     .on('finish', () => t.is(count, expectedData.length));
 });

@@ -19,7 +19,7 @@ const fsStub = sinon.stub(fs, 'readFileSync', () => {
 
 test.after('cleanup', t => fsStub.restore());
 
-test.serial('searchString match should return correct details', async t => {
+test('searchString match should return correct details', async t => {
 
   const searchString = 'test3';
   const match = new Match({objectMode: true}, searchString);
@@ -29,17 +29,21 @@ test.serial('searchString match should return correct details', async t => {
     lineNumber: 2,
     match: searchString
   };
+  let count = 0;
 
   passThrough.write(path);
   passThrough.end();
 
-  t.plan(1);
   await passThrough
     .pipe(match)
-    .on('data', item => t.deepEqual(item, expectedResult));
+    .on('data', (item) => {
+      count++;
+      return t.deepEqual(item, expectedResult);
+    })
+    .on('finish', () => t.is(count, 1));
 });
 
-test.serial('multiple searchString matches should return correct details', async t => {
+test('multiple searchString matches should return correct details', async t => {
 
   const searchString = 'test4';
   const match = new Match({objectMode: true}, searchString);
@@ -61,8 +65,8 @@ test.serial('multiple searchString matches should return correct details', async
   passThrough.write(path);
   passThrough.end();
 
-  t.plan(expectedResults.length);
   await passThrough
     .pipe(match)
-    .on('data', item => t.deepEqual(item, expectedResults[count++]));
+    .on('data', (item) => t.deepEqual(item, expectedResults[count++]))
+    .on('finish', () => t.is(count, expectedResults.length));
 });

@@ -82,9 +82,6 @@ test('service results created from lined input should be provided to consumer', 
 
   await passThrough
     .pipe(serviceResults)
-    .on('data', serviceResult => t.deepEqual(serviceResult, expectedServiceResults[count++]))
-    // validate correct number of 'data' assertions
-    // t.plan(), and test of count after 'await' will not work
-    // as pushing to stream in _transform AND _flush
+    .on('data', (serviceResult) => t.deepEqual(serviceResult, expectedServiceResults[count++]))
     .on('finish', () => t.is(count, expectedServiceResults.length));
 });
