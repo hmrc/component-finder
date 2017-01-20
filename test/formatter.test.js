@@ -1,5 +1,5 @@
-import test from 'ava';
-import formatter from './../lib/utils/formatter';
+import test from 'ava'
+import formatter from './../lib/utils/formatter'
 
 const serviceResults = [
   {
@@ -21,15 +21,14 @@ const serviceResults = [
       '/example/file/path/file-other1.html'
     ]
   }
-];
+]
 
 test('Logging formatter should log service results as expected', t => {
+  const [serviceResult, serviceResultOther] = serviceResults
+  const formattedResults = formatter(serviceResult)
+  const formattedResultsOther = formatter(serviceResultOther)
 
-  const [serviceResult, serviceResultOther] = serviceResults;
-  const formattedResults = formatter(serviceResult);
-  const formattedResultsOther = formatter(serviceResultOther);
+  t.is(formattedResults, 'service-name (public) [3]')
 
-  t.is(formattedResults, 'service-name (public) [3]');
-
-  t.is(formattedResultsOther, 'service-name-other (public) [2]');
-});
+  t.is(formattedResultsOther, 'service-name-other (public) [2]')
+})

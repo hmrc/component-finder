@@ -1,7 +1,7 @@
-import test from 'ava';
-import sinon from 'sinon';
-import ConsoleLogger from './../lib/streams/ConsoleLogger';
-import {PassThrough} from 'stream';
+import test from 'ava'
+import sinon from 'sinon'
+import ConsoleLogger from './../lib/streams/ConsoleLogger'
+import {PassThrough} from 'stream'
 
 const serviceResults = [
   {
@@ -23,31 +23,31 @@ const serviceResults = [
       '/example/file/path/file-other1.html'
     ]
   }
-];
+]
 
 test.before(t => {
-  sinon.stub(console, 'log');
-  sinon.stub(process.stdout, 'write');
-});
+  sinon.stub(console, 'log')
+  sinon.stub(process.stdout, 'write')
+})
 
 test.after(t => {
-  console.log.restore();
-  process.stdout.write.restore();
-});
+  console.log.restore()
+  process.stdout.write.restore()
+})
 
 test('ConsoleLogger should output results one by one followed by totals', async t => {
-  const consoleLogger = new ConsoleLogger({objectMode: true});
-  const passThrough = new PassThrough({objectMode: true});
-  let count = 0;
-  let expectedData = serviceResults.slice(0);
-  const expectedSummary = '5 occurrences found in 2 projects';
+  const consoleLogger = new ConsoleLogger({objectMode: true})
+  const passThrough = new PassThrough({objectMode: true})
+  let count = 0
+  let expectedData = serviceResults.slice(0)
+  const expectedSummary = '5 occurrences found in 2 projects'
 
-  expectedData.push(expectedSummary);
-  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
-  passThrough.end();
+  expectedData.push(expectedSummary)
+  serviceResults.forEach(serviceResult => passThrough.write(serviceResult))
+  passThrough.end()
 
   await passThrough
     .pipe(consoleLogger)
     .on('data', (data) => t.deepEqual(data, expectedData[count++]))
-    .on('finish', () => t.is(count, expectedData.length));
-});
+    .on('finish', () => t.is(count, expectedData.length))
+})
