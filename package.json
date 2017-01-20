@@ -11,7 +11,7 @@
     "component-finder": "bin/component-finder.js"
   },
   "scripts": {
-    "test": "nyc ava test/**/*.test.js --verbose",
+    "test": "standard && nyc ava test/**/*.test.js --verbose",
     "test:watch": "npm run test -- --watch"
   },
   "engines": {
@@ -37,7 +37,8 @@
     "nyc": "^7.1.0",
     "ava": "^0.15.2",
     "nock": "^8.0.0",
-    "minimatch": "^3.0.3"
+    "minimatch": "^3.0.3",
+    "standard": "^8.6.0"
   },
   "ava": {
     "require": [
