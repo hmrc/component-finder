@@ -4,19 +4,6 @@ import {EOL} from 'os';
 import parseOptions from './../lib/utils/parseOptions';
 import {ERRORS} from './../lib/utils/constants';
 
-test('returns error if no search string passed', t => {
-  const searchOptions = parseOptions([]);
-
-  t.deepEqual(searchOptions.optionErrors, [ERRORS.NO_SEARCH_STRING]);
-});
-
-test('returns error if no search string passed with -s option', t => {
-  const testArray = ['-s'];
-  const searchOptions = parseOptions(testArray.slice());
-
-  t.deepEqual(searchOptions.optionErrors, [ERRORS.NO_SEARCH_STRING]);
-});
-
 test('returns correct default options for search string as default third argument', t => {
   const testArray = ['SEARCH_STRING'];
   const searchOptions = parseOptions(testArray.slice());
