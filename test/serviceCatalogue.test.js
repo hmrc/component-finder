@@ -111,7 +111,7 @@ test('.getServices() should reject when bad JSON is returned', t => {
   return serviceCatalogue.getServices(apiConfig, servicesAPIPath)
     .catch(err => {
       t.is(err.name, 'SyntaxError');
-      t.is(err.message, 'Unexpected token b');
+      t.true(err.message.includes('Unexpected token b'));
     });
 });
 
