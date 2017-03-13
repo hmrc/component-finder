@@ -17,6 +17,7 @@ $ component-finder foo
 * [Installation](#installation)
 * [Usage](#usage)
 * [Contributing](#contributing)
+    - [Raising a pull request](#raising-a-pull-request)
 * [License](#license)
 
 
@@ -159,7 +160,11 @@ To contribute to Component Finder...
 
 * Clone or fork this repo
 * Create a new branch and commit your code there.
-* Write or update tests for your code, and make sure the tests pass before opening a pull-request:
+* Write or update tests for your code
+
+### Raising a pull request
+We lint our JavaScript with [standard](https://github.com/feross/standard). Please make sure your code is correctly
+linted and the tests pass before opening a pull-request:
 
 ```
 $ npm test
