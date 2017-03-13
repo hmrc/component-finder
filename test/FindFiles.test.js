@@ -11,13 +11,14 @@ const files = [
   'target/test4.html',
   'target/test5.js'
 ];
+
 const globSyncStub = sinon.stub(glob, 'sync', (pattern) => {
   return files.filter((file) => minimatch(file, pattern));
 });
 
 test.after('cleanup', t => globSyncStub.restore());
 
-test('file should be html file inside target dir', async t => {
+test('should return the only html file from target dir', async t => {
   const findFiles = new FindFiles({objectMode: true}, 'target/**/*.html');
   let count = 0;
 
@@ -29,7 +30,15 @@ test('file should be html file inside target dir', async t => {
     .on('finish', () => t.is(count, 1));
 });
 
-test('files should be returned line by line', async t => {
+test('should return multiple files from target dir', async t => {
+  const findFiles = new FindFiles({objectMode: true}, 'target/**/*.{html,js}');
+  let count = 3
+
+  await findFiles
+    .on('data', file => t.is(file, files[count++]));
+});
+
+test('should return results line by line', async t => {
   const findFiles = new FindFiles({objectMode: true}, '*');
   let count = 0;
 
