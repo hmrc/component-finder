@@ -107,7 +107,19 @@ Input is cleaned up before a search is performed. The following characters are r
 * `[disabled]` (attribute selectors)
 * `   ` (extraneous whitespace)
 
-#### Results
+### Advanced Options
+
+#### File Extensions
+
+By default, component finder searches through html files. You can modify or expand the search to include other file types with the `-f` flag and including a comma separated list of file extensions. This list should not include 'dot's or spaces. If it does include spaces, it should be enclosed in quotes :
+
+e.g. `node index.js -f html,scala searchstring`
+
+e.g. `node index.js -f jade searchstring`
+
+e.g. `node index.js -f "js, java" searchstring`
+
+### Results
 
 Results appear in the console like this...
 
