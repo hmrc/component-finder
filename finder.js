@@ -1,10 +1,10 @@
 import {EOL} from 'os';
+import yargs from 'yargs';
 import clone from './lib/clone';
 import search from './lib/search';
 import sanitizer from './lib/utils/sanitizer';
 import serviceCatalogue from './lib/serviceCatalogue';
 import isFrontendService from './lib/utils/isFrontendService';
-import parseOptions from './lib/utils/parseOptions';
 
 try {
   var config = require('./config.json');
@@ -14,16 +14,23 @@ catch(err) {
   process.exit(1);
 };
 
-const searchOptions = parseOptions(process.argv.slice(2));
-if (searchOptions.optionErrors.length) {
-  searchOptions.optionErrors.forEach(msg => {
-    process.stdout.write(msg);
-  });
-  process.exit(1);
-}
+const args = yargs
+  .usage('node $0 [options] search_string')
+  .option('f', {
+    alias: 'file',
+    default: 'html',
+    type: 'string',
+    describe: 'The file extension(s) of the files to search'
+  })
+  .demandCommand(1)
+  .help()
+  .argv;
 
 serviceCatalogue.getProjects(config.api)
   .then(services => services.filter(service => isFrontendService(service.name, config.whitelist)))
   .then(frontendServices => clone(frontendServices))
-  .then(() => search(searchOptions))
+  .then(() => search({
+    fileExtensions: args.file,
+    searchString: args._
+  }))
   .catch(err => console.error(err));
