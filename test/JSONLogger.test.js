@@ -1,7 +1,7 @@
-import test from 'ava';
-import fs from 'fs';
-import JSONLogger from './../lib/streams/JSONLogger';
-import {PassThrough} from 'stream';
+import test from 'ava'
+import fs from 'fs'
+import JSONLogger from './../lib/streams/JSONLogger'
+import {PassThrough} from 'stream'
 
 const serviceResults = [
   {
@@ -43,39 +43,40 @@ const serviceResults = [
       }
     ]
   }
-];
+]
 
-let jsonLogger;
-let passThrough;
+let jsonLogger
+let passThrough
 
 test.beforeEach(t => {
-  jsonLogger = new JSONLogger({objectMode: true});
-  passThrough = new PassThrough({objectMode: true});
-});
+  jsonLogger = new JSONLogger({objectMode: true})
+  passThrough = new PassThrough({objectMode: true})
+})
 
-test.after(t => fs.unlinkSync('results.json'));
+test.after(t => fs.unlinkSync('results.json'))
 
-test('Service results object should be provided to consumer object by object', async t => {
-  let count = 0;
+test('Service results object should be provided to consumer object by object', t => {
+  let count = 0
 
-  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
-  passThrough.end();
+  passThrough.pipe(jsonLogger)
 
-  await passThrough
-    .pipe(jsonLogger)
-    .on('data', data => t.deepEqual(data, serviceResults[count++]));
-});
+  passThrough.on('data', (data) => t.deepEqual(data, serviceResults[count++]))
+  serviceResults.forEach(serviceResult => passThrough.write(serviceResult))
+
+  passThrough.on('end', (data) => t.is(count, 2))
+  passThrough.end()
+})
 
 test('JSON service results object should be written to results.json', async t => {
-  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
-  passThrough.end();
+  serviceResults.forEach(serviceResult => passThrough.write(serviceResult))
+  passThrough.end()
 
   await passThrough
     .pipe(jsonLogger)
     .on('finish', () => {
-      const data = fs.readFileSync('results.json', 'utf8');
-      const json = JSON.parse(data);
+      const data = fs.readFileSync('results.json', 'utf8')
+      const json = JSON.parse(data)
 
-      t.deepEqual(json, serviceResults);
-    });
-});
+      t.deepEqual(json, serviceResults)
+    })
+})

@@ -1,9 +1,9 @@
-import test from 'ava';
-import ServiceResults from './../lib/streams/ServiceResults';
-import {PassThrough} from 'stream';
+import test from 'ava'
+import ServiceResults from './../lib/streams/ServiceResults'
+import {PassThrough} from 'stream'
 
-const passThrough = new PassThrough({objectMode: true});
-const serviceResults = new ServiceResults({objectMode: true});
+const passThrough = new PassThrough({objectMode: true})
+const serviceResults = new ServiceResults({objectMode: true})
 const matchDetailInputs = [
   {
     filePath: 'target/service-name-public/example/file/path/file.html',
@@ -30,7 +30,7 @@ const matchDetailInputs = [
     lineNumber: 3,
     match: 'another other match'
   }
-];
+]
 
 const expectedServiceResults = [
   {
@@ -72,15 +72,16 @@ const expectedServiceResults = [
       }
     ]
   }
-];
+]
 
 test('service results created from lined input should be provided to consumer', async t => {
-  let count = 0;
+  let count = 0
 
-  matchDetailInputs.forEach(matchDetail => passThrough.write(matchDetail));
-  passThrough.end();
+  matchDetailInputs.forEach(matchDetail => passThrough.write(matchDetail))
+  passThrough.end()
 
   await passThrough
     .pipe(serviceResults)
-    .on('data', serviceResult => t.deepEqual(serviceResult, expectedServiceResults[count++]));
-});
+    .on('data', (serviceResult) => t.deepEqual(serviceResult, expectedServiceResults[count++]))
+    .on('finish', () => t.is(count, expectedServiceResults.length))
+})
