@@ -11,7 +11,8 @@
     "component-finder": "bin/component-finder.js"
   },
   "scripts": {
-    "test": "standard && nyc ava test/**/*.test.js --verbose",
+    "lint": "standard",
+    "test": "npm run lint && nyc ava test/**/*.test.js --verbose",
     "test:watch": "npm run test -- --watch"
   },
   "engines": {
