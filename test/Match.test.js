@@ -28,13 +28,18 @@ test('searchString match should return correct details', async t => {
     lineNumber: 2,
     match: searchString
   };
+  let count = 0;
 
   passThrough.write(path);
   passThrough.end();
 
   await passThrough
     .pipe(match)
-    .on('data', item => t.deepEqual(item, expectedResult));
+    .on('data', (item) => {
+      count++;
+      return t.deepEqual(item, expectedResult);
+    })
+    .on('finish', () => t.is(count, 1));
 });
 
 test('multiple searchString matches should return correct details', async t => {
@@ -60,5 +65,6 @@ test('multiple searchString matches should return correct details', async t => {
 
   await passThrough
     .pipe(match)
-    .on('data', (item) => t.deepEqual(item, expectedResults[count++]));
+    .on('data', (item) => t.deepEqual(item, expectedResults[count++]))
+    .on('finish', () => t.is(count, expectedResults.length));
 });

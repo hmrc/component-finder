@@ -82,5 +82,6 @@ test('service results created from lined input should be provided to consumer', 
 
   await passThrough
     .pipe(serviceResults)
-    .on('data', serviceResult => t.deepEqual(serviceResult, expectedServiceResults[count++]));
+    .on('data', (serviceResult) => t.deepEqual(serviceResult, expectedServiceResults[count++]))
+    .on('finish', () => t.is(count, expectedServiceResults.length));
 });
