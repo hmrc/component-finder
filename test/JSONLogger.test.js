@@ -55,15 +55,16 @@ test.beforeEach(t => {
 
 test.after(t => fs.unlinkSync('results.json'));
 
-test('Service results object should be provided to consumer object by object', async t => {
+test('Service results object should be provided to consumer object by object', t => {
   let count = 0;
 
-  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
-  passThrough.end();
+  passThrough.pipe(jsonLogger);
 
-  await passThrough
-    .pipe(jsonLogger)
-    .on('data', data => t.deepEqual(data, serviceResults[count++]));
+  passThrough.on('data', (data) => t.deepEqual(data, serviceResults[count++]));
+  serviceResults.forEach(serviceResult => passThrough.write(serviceResult));
+
+  passThrough.on('end', (data) => t.is(count, 2));
+  passThrough.end();
 });
 
 test('JSON service results object should be written to results.json', async t => {
