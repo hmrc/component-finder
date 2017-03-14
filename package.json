@@ -16,8 +16,8 @@
     "test:watch": "npm run test -- --watch"
   },
   "engines": {
-    "node": ">=4.0.0",
-    "npm": ">=2.14.20"
+    "node": ">=6.0.0",
+    "npm": ">=3.10.10"
   },
   "author": "HM Revenue & Customs",
   "contributors": [
