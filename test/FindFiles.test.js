@@ -38,6 +38,14 @@ test('should return multiple files from target dir', async t => {
     .on('data', file => t.is(file, files[count++]))
 })
 
+test('should return multiple files from target dir', async t => {
+  const findFiles = new FindFiles({objectMode: true}, 'target/**/*.{html,js}')
+  let count = 3
+
+  await findFiles
+    .on('data', file => t.is(file, files[count++]))
+})
+
 test('should return results line by line', async t => {
   const findFiles = new FindFiles({objectMode: true}, '*')
   let count = 0
