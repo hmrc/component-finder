@@ -25,7 +25,7 @@ test('searchString match should return correct details', async t => {
   const passThrough = new PassThrough({objectMode: true})
   const expectedResult = {
     filePath: path,
-    lineNumber: 2,
+    lineNumber: 3,
     match: searchString
   }
   let count = 0
@@ -49,12 +49,12 @@ test('multiple searchString matches should return correct details', async t => {
   const expectedResults = [
     {
       filePath: path,
-      lineNumber: 3,
+      lineNumber: 4,
       match: searchString
     },
     {
       filePath: path,
-      lineNumber: 5,
+      lineNumber: 6,
       match: searchString
     }
   ]
