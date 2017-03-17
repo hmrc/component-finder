@@ -26,7 +26,8 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "babel-preset-es2015-node4": "^2.1.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.2.1",
     "babel-register": "^6.11.6",
     "co": "^4.6.0",
     "glob": "^7.1.1",
@@ -43,7 +44,8 @@
   },
   "ava": {
     "require": [
-      "babel-register"
+      "babel-register",
+      "babel-polyfill"
     ]
   },
   "nyc": {
@@ -52,7 +54,8 @@
       "finder.js"
     ],
     "require": [
-      "babel-register"
+      "babel-register",
+      "babel-polyfill"
     ]
   }
 }
