@@ -140,6 +140,7 @@ They are also saved to a `results.json` file like this...
   "github": "",
   "count": 1,
   "files": [{
+    url: "",
     path: "",
     line: "",
     match: ""
@@ -149,6 +150,7 @@ They are also saved to a `results.json` file like this...
 
 * **name**: The name of the repository
 * **github**: Whether the repository lives in the open or in an enterprise instance of github
+* **files.url**: The GitHub url to the file and line that contains the match
 * **files.path**: The path to a file that contains `searchString`
 * **files.line**: The line in the file where the match occurs
 * **files.match**: The actual match that was found in the file
