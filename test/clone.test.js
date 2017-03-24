@@ -4,25 +4,16 @@ import clone from './../lib/clone'
 
 const mockServices = [
   {
-    name: 'testData',
-    githubUrls: [
-      {
-        name: 'github-com',
-        displayName: 'GitHub.com',
-        url: 'https://github.com/test-url'
-      }
-    ]
+    name: 'github-com',
+    displayName: 'GitHub.com',
+    url: 'https://github.com/test-url'
   },
   {
-    name: 'testDataOther',
-    githubUrls: [
-      {
-        name: 'github-com',
-        displayName: 'GitHub.com',
-        url: 'https://github.com/test-url-other'
-      }
-    ]
+    name: 'github-com',
+    displayName: 'GitHub.com',
+    url: 'https://github.com/test-url-other'
   }
+
 ]
 
 test.before(t => sinon.stub(process.stdout, 'write'))
