@@ -2,6 +2,7 @@ import test from 'ava'
 import sinon from 'sinon'
 import ConsoleLogger from './../lib/streams/ConsoleLogger'
 import {PassThrough} from 'stream'
+import {setupLogger} from './../lib/utils/logging'
 
 const serviceResults = [
   {
@@ -26,6 +27,7 @@ const serviceResults = [
 ]
 
 test.before(t => {
+  setupLogger(0)
   sinon.stub(console, 'log')
   sinon.stub(process.stdout, 'write')
 })
