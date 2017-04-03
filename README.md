@@ -120,6 +120,13 @@ e.g. `node index.js -f jade searchstring`
 
 e.g. `node index.js -f "js, java" searchstring`
 
+#### Increase logging verbosity 
+
+Logging is available via the `logging` utility module. By default the logging level is set to `0` this will display all `logger.log()` method calls. If you wish to increase the logging level to see both `logger.log()` and `logging.debug()` calls you can do so by passing the `-v` flag.
+
+e.g. `node index.js -v`
+e.g. `node index.js --verbose`
+
 ### Results
 
 Results appear in the console like this...

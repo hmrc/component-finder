@@ -2,6 +2,7 @@ import test from 'ava'
 import nock from 'nock'
 import sinon from 'sinon'
 import serviceCatalogue from './../lib/serviceCatalogue'
+import {setupLogger} from './../lib/utils/logging'
 
 const apiConfig = {
   'protocol': 'http',
@@ -56,7 +57,10 @@ Could not connect to ${apiDomain}.
 Please make sure you're config details are correct
 and you are connected to a VPN if you need to be.`
 
-test.before(t => sinon.stub(process.stdout, 'write'))
+test.before(t => {
+  sinon.stub(process.stdout, 'write')
+  setupLogger(0)
+})
 
 test.after(t => process.stdout.write.restore())
 

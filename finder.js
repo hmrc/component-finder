@@ -5,6 +5,7 @@ import search from './lib/search'
 import serviceCatalogue from './lib/serviceCatalogue'
 import isFrontendService from './lib/utils/isFrontendService'
 import getServiceRepoDetails from './lib/utils/serviceRepoDetails'
+import {setupLogger, logger} from './lib/utils/logging'
 
 try {
   var config = require('./config.json')
@@ -21,9 +22,16 @@ const args = yargs
     type: 'string',
     describe: 'The file extension(s) of the files to search'
   })
+  .option('v', {
+    alias: 'verbose',
+    type: 'count',
+    describe: 'Increase logging verbosity'
+  })
   .demandCommand(1)
   .help()
   .argv
+
+setupLogger(args.verbose)
 
 serviceCatalogue.getProjects(config.api)
   .then((services) => services.filter(service => isFrontendService(service.name, config.whitelist)))
@@ -33,4 +41,4 @@ serviceCatalogue.getProjects(config.api)
     return clone(serviceRepoDetails.details)
       .then(() => search(serviceRepoDetails.urls, {fileExtensions: args.file, searchString: args._}))
   })
-  .catch((err) => console.error(err))
+  .catch((err) => logger.log(err))
